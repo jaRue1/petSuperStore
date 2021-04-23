@@ -57,8 +57,5 @@ exports.updateSingleStaff = (req, res) => {
   .then(this.getAllStaff (req,res))
   .catch(err => res.status(500).send('Error updating staff: ' + err.message))
 }
-exports.deleteStaff= (req, res) => {
-  reconnectToFirestore()
-  res.send("")
-}
+
 

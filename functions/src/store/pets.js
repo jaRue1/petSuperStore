@@ -52,9 +52,9 @@ exports.createPet = (req, res) => {
 }
 exports.updateSinglePet = (req, res) => {
   reconnectToFirestore()
-  const { staffId } = req.params
+  const petUpdate  = req.body
   db.collection('staffs')
-  .doc(staffId)
-  .get()
-  .then(singleStaff => res.send(singleStaff.data()))
+  .doc(req.params.petId).update(petUpdate)
+  .then(this.getAllPets (req,res))
+  .catch(err => res.status(500).send('Error updating staff: ' + err.message))
 }
