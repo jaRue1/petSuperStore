@@ -33,6 +33,7 @@ exports.getAllPets = (req, res) => {
     .doc(petId)
     .get()
     .then(singlePet => res.send(singlePet.data()))
+    .catch(err => res.status(500).send('Error getting pet' + err.message))
 }
 
 exports.createPet = (req, res) => {
@@ -40,9 +41,13 @@ exports.createPet = (req, res) => {
   const newPet = req.body
   db.collection('pets').add(newPet)
     .then(() => res.status(200).send('Pet member created!'))
-    .catch(err => res.status(500).send('Error creating task: ' + err.message))
+    .catch(err => res.status(500).send('Error creating pet' + err.message))
 }
-exports.updatePets = (req, res) => {
+exports.updateSinglePet = (req, res) => {
   reconnectToFirestore()
-  res.send("")
+  const { staffId } = req.params
+  db.collection('staffs')
+  .doc(staffId)
+  .get()
+  .then(singleStaff => res.send(singleStaff.data()))
 }
