@@ -1,16 +1,23 @@
-var admin = require("firebase-admin")
 
-let serviceAccount = require("../../credentials.json")
+const admin = require("firebase-admin")
+
+const serviceAccount = require("../../credentials.json")
 let db;
 function reconnectToFirestore() {
-  if (!db) {
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-    })
-    db = admin.firestore()
-  }
+    if (!db) {
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount),
+        })
+        db = admin.firestore()
+    }
 }
-
+exports.deletePet = (req, res) => {
+    reconnectToFirestore()
+    const { petId } = req.params
+    db.collection('pet').doc(petId).delete()
+        .then(() => this.getPetId(req, res))
+        .catch(err => res.status(500).send('error creating pet:' + err.message))
+}
 
 exports.getAllPets = (req, res) => {
     reconnectToFirestore()
@@ -42,7 +49,4 @@ exports.createPet = (req, res) => {
     .then(() => res.status(200).send('Pet member created!'))
     .catch(err => res.status(500).send('Error creating task: ' + err.message))
 }
-exports.updatePets = (req, res) => {
-  reconnectToFirestore()
-  res.send("")
-}
+

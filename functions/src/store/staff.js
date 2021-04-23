@@ -1,14 +1,21 @@
-var admin = require("firebase-admin")
 
-let serviceAccount = require("../../credentials.json")
+const admin = require("firebase-admin")
+const serviceAccount = require("../../credentials.json")
 let db;
 function reconnectToFirestore() {
-  if (!db) {
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-    })
-    db = admin.firestore()
-  }
+    if (!db) {
+        admin.initializeApp({
+            credential: admin.credential.cred(serviceAccount),
+        })
+        db = admin.firestore()
+    }
+}
+exports.deleteStaff = (req, res) => {
+    reconnetToFirestore()
+    const { staffId } = req.params
+    db.collection('staff').doc(staffId).delete()
+    .then(()=> this.getstaffId(req, res))
+    .catch(err=> res.status(500).send('error creating staff:' + err.message)) 
 }
 
 exports.getAllStaff = (req, res) => {
@@ -42,12 +49,4 @@ exports.createStaff = (req, res) => {
     .catch(err => res.status(500).send('Error creating task: ' + err.message))
 }
 
-exports.updateStaff = (req, res) => {
-  reconnectToFirestore()
-  res.send("")
-}
-exports.deleteStaff= (req, res) => {
-  reconnectToFirestore()
-  res.send("")
-}
 
