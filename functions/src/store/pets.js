@@ -14,8 +14,8 @@ function reconnectToFirestore() {
 exports.deletePet = (req, res) => {
     reconnectToFirestore()
     const { petId } = req.params
-    db.collection('pet').doc(petId).delete()
-        .then(() => this.getPetId(req, res))
+    db.collection('pets').doc(petId).delete()
+        .then(() => this.getAllPets(req, res))
         .catch(err => res.status(500).send('error creating pet:' + err.message))
 }
 
@@ -53,8 +53,7 @@ exports.createPet = (req, res) => {
 exports.updateSinglePet = (req, res) => {
   reconnectToFirestore()
   const petUpdate  = req.body
-  db.collection('staffs')
-  .doc(req.params.petId).update(petUpdate)
-  .then(this.getAllPets (req,res))
+  db.collection('staffs').doc(req.params.petId).update(petUpdate)
+  .then(this.getAll(req,res))
   .catch(err => res.status(500).send('Error updating staff: ' + err.message))
 }

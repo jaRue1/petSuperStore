@@ -5,16 +5,16 @@ let db;
 function reconnectToFirestore() {
     if (!db) {
         admin.initializeApp({
-            credential: admin.credential.cred(serviceAccount),
+            credential: admin.credential.cert(serviceAccount),
         })
         db = admin.firestore()
     }
 }
 exports.deleteStaff = (req, res) => {
-    reconnetToFirestore()
+    reconnectToFirestore()
     const { staffId } = req.params
-    db.collection('staff').doc(staffId).delete()
-    .then(()=> this.getstaffId(req, res))
+    db.collection('staffs').doc(staffId).delete()
+    .then(()=> this.getAllStaff(req, res))
     .catch(err=> res.status(500).send('error creating staff:' + err.message)) 
 }
 
@@ -52,9 +52,8 @@ exports.createStaff = (req, res) => {
 exports.updateSingleStaff = (req, res) => {
   reconnectToFirestore()
   const staffUpdate  = req.body
-  db.collection('staffs')
-  .doc(req.params.staffId).update(staffUpdate)
-  .then(this.getAllStaff (req,res))
+  db.collection('staffs').doc(req.params.staffId).update(staffUpdate)
+  .then(() => this.getAllStaff (req,res))
   .catch(err => res.status(500).send('Error updating staff: ' + err.message))
 }
 
