@@ -10,11 +10,17 @@ function reconnectToFirestore() {
     db = admin.firestore()
   }
 }
+
+exports.createPet = (req, res) => {
+  reconnectToFirestore()
+  const newPet = req.body
+  db.collection('pets').add(newPet)
+    .then(() => res.status(200).send('Pet member created!'))
+    .catch(err => res.status(500).send('Error creating task: ' + err.message))
+}
 exports.updatePets = (req, res) => {
   reconnectToFirestore()
-  res.send("Updated cars")
+  res.send("")
 }
-exports.deletePets= (req, res) => {
-  reconnectToFirestore()
-  res.send("Deleted car")
-}
+
+

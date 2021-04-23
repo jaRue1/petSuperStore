@@ -11,12 +11,20 @@ function reconnectToFirestore() {
   }
 }
 
+exports.createStaff = (req, res) => {
+  reconnectToFirestore()
+  const newStaff = req.body
+  db.collection('staffs').add(newStaff)
+    .then(() => res.status(200).send('Staff member created!'))
+    .catch(err => res.status(500).send('Error creating task: ' + err.message))
+}
 
 exports.updateStaff = (req, res) => {
   reconnectToFirestore()
-  res.send("Updated cars")
+  res.send("")
 }
 exports.deleteStaff= (req, res) => {
   reconnectToFirestore()
-  res.send("Deleted car")
+  res.send("")
 }
+

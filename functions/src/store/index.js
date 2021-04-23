@@ -10,3 +10,5 @@ function reconnectToFirestore() {
     db = admin.firestore()
   }
 }
+
+
