@@ -11,6 +11,7 @@ function reconnectToFirestore() {
   }
 }
 
+
 exports.getAllPets = (req, res) => {
     reconnectToFirestore()
     db.collection('pets')
@@ -32,4 +33,16 @@ exports.getAllPets = (req, res) => {
     .doc(petId)
     .get()
     .then(singlePet => res.send(singlePet.data()))
+}
+
+exports.createPet = (req, res) => {
+  reconnectToFirestore()
+  const newPet = req.body
+  db.collection('pets').add(newPet)
+    .then(() => res.status(200).send('Pet member created!'))
+    .catch(err => res.status(500).send('Error creating task: ' + err.message))
+}
+exports.updatePets = (req, res) => {
+  reconnectToFirestore()
+  res.send("")
 }

@@ -34,3 +34,20 @@ exports.getAllStaff = (req, res) => {
       .then(singleStaff => res.send(singleStaff.data()))
   }
  
+exports.createStaff = (req, res) => {
+  reconnectToFirestore()
+  const newStaff = req.body
+  db.collection('staffs').add(newStaff)
+    .then(() => res.status(200).send('Staff member created!'))
+    .catch(err => res.status(500).send('Error creating task: ' + err.message))
+}
+
+exports.updateStaff = (req, res) => {
+  reconnectToFirestore()
+  res.send("")
+}
+exports.deleteStaff= (req, res) => {
+  reconnectToFirestore()
+  res.send("")
+}
+
