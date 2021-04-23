@@ -18,6 +18,9 @@ exports.createPet = (req, res) => {
     .then(() => res.status(200).send('Pet member created!'))
     .catch(err => res.status(500).send('Error creating task: ' + err.message))
 }
-
+exports.updatePets = (req, res) => {
+  reconnectToFirestore()
+  res.send("")
+}
 
 

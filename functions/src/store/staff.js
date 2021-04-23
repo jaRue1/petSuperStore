@@ -19,3 +19,12 @@ exports.createStaff = (req, res) => {
     .catch(err => res.status(500).send('Error creating task: ' + err.message))
 }
 
+exports.updateStaff = (req, res) => {
+  reconnectToFirestore()
+  res.send("")
+}
+exports.deleteStaff= (req, res) => {
+  reconnectToFirestore()
+  res.send("")
+}
+
