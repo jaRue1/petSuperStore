@@ -1,3 +1,4 @@
+
 const admin = require("firebase-admin")
 
 const serviceAccount = require("../../credentials.json")
@@ -16,5 +17,36 @@ exports.deletePet = (req, res) => {
     db.collection('pet').doc(petId).delete()
         .then(() => this.getPetId(req, res))
         .catch(err => res.status(500).send('error creating pet:' + err.message))
+}
+
+exports.getAllPets = (req, res) => {
+    reconnectToFirestore()
+    db.collection('pets')
+      .get()
+      .then((allPets) => {
+        let pets = []
+        allPets.forEach((pet) => {
+          pets.push(pet.data())
+        })
+        res.send(pets)
+      })
+      .catch((err) => res.status(500).send('Error getting all pets: ' + err.message))
+  }
+
+  exports.getSinglePet = (req, res) => {
+    reconnectToFirestore()
+    const { petId } = req.params
+    db.collection('pets')
+    .doc(petId)
+    .get()
+    .then(singlePet => res.send(singlePet.data()))
+}
+
+exports.createPet = (req, res) => {
+  reconnectToFirestore()
+  const newPet = req.body
+  db.collection('pets').add(newPet)
+    .then(() => res.status(200).send('Pet member created!'))
+    .catch(err => res.status(500).send('Error creating task: ' + err.message))
 }
 
