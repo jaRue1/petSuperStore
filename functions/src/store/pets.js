@@ -11,6 +11,30 @@ function reconnectToFirestore() {
   }
 }
 
+
+exports.getAllPets = (req, res) => {
+    reconnectToFirestore()
+    db.collection('pets')
+      .get()
+      .then((allPets) => {
+        let pets = []
+        allPets.forEach((pet) => {
+          pets.push(pet.data())
+        })
+        res.send(pets)
+      })
+      .catch((err) => res.status(500).send('Error getting all pets: ' + err.message))
+  }
+
+  exports.getSinglePet = (req, res) => {
+    reconnectToFirestore()
+    const { petId } = req.params
+    db.collection('pets')
+    .doc(petId)
+    .get()
+    .then(singlePet => res.send(singlePet.data()))
+}
+
 exports.createPet = (req, res) => {
   reconnectToFirestore()
   const newPet = req.body
@@ -22,5 +46,3 @@ exports.updatePets = (req, res) => {
   reconnectToFirestore()
   res.send("")
 }
-
-
