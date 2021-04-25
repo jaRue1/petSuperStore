@@ -1,17 +1,9 @@
 
 const admin = require("firebase-admin")
 const serviceAccount = require("../../credentials.json")
-let db;
-function reconnectToFirestore() {
-    if (!db) {
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-        })
-        db = admin.firestore()
-    }
-}
+const {reconnectToFirestore} = require('./index')
 exports.deleteStaff = (req, res) => {
-    reconnectToFirestore()
+    const db = reconnectToFirestore()
     const { staffId } = req.params
     db.collection('staffs').doc(staffId).delete()
     .then(()=> this.getAllStaff(req, res))
@@ -19,7 +11,7 @@ exports.deleteStaff = (req, res) => {
 }
 
 exports.getAllStaff = (req, res) => {
-    reconnectToFirestore()
+    const db = reconnectToFirestore()
     db.collection('staffs')
       .get()
       .then((allStaff) => {
@@ -33,7 +25,7 @@ exports.getAllStaff = (req, res) => {
   }
  
   exports.getSingleStaff = (req, res) => {
-      reconnectToFirestore()
+      const db = reconnectToFirestore()
       const { staffId } = req.params
       db.collection('staffs')
       .doc(staffId)
@@ -42,7 +34,7 @@ exports.getAllStaff = (req, res) => {
   }
  
 exports.createStaff = (req, res) => {
-  reconnectToFirestore()
+  const db = reconnectToFirestore()
   const newStaff = req.body
   db.collection('staffs').add(newStaff)
     .then(() => res.status(200).send('Staff member created!'))
@@ -50,7 +42,7 @@ exports.createStaff = (req, res) => {
 }
 
 exports.updateSingleStaff = (req, res) => {
-  reconnectToFirestore()
+  const db = reconnectToFirestore()
   const staffUpdate  = req.body
   db.collection('staffs').doc(req.params.staffId).update(staffUpdate)
   .then(() => this.getAllStaff (req,res))

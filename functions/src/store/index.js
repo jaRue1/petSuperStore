@@ -1,15 +1,12 @@
-var admin = require("firebase-admin")
-
+let admin = require("firebase-admin")
 let serviceAccount = require("../../credentials.json")
-let db;
-
-function reconnectToFirestore() {
-  if(!db) {
+exports.reconnectToFirestore = () => {
+  if(admin.apps.length === 0) {
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
     })
-    db = admin.firestore()
   }
+  return admin.firestore()
 }
 
 

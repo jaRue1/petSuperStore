@@ -1,18 +1,9 @@
 
 const admin = require("firebase-admin")
-
 const serviceAccount = require("../../credentials.json")
-let db;
-function reconnectToFirestore() {
-    if (!db) {
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-        })
-        db = admin.firestore()
-    }
-}
+const {reconnectToFirestore} = require('./index')
 exports.deletePet = (req, res) => {
-    reconnectToFirestore()
+    const db = reconnectToFirestore()
     const { petId } = req.params
     db.collection('pets').doc(petId).delete()
         .then(() => this.getAllPets(req, res))
@@ -20,7 +11,7 @@ exports.deletePet = (req, res) => {
 }
 
 exports.getAllPets = (req, res) => {
-    reconnectToFirestore()
+    const db = reconnectToFirestore()
     db.collection('pets')
       .get()
       .then((allPets) => {
@@ -34,7 +25,7 @@ exports.getAllPets = (req, res) => {
   }
 
   exports.getSinglePet = (req, res) => {
-    reconnectToFirestore()
+    const db = reconnectToFirestore()
     const { petId } = req.params
     db.collection('pets')
     .doc(petId)
@@ -44,16 +35,16 @@ exports.getAllPets = (req, res) => {
 }
 
 exports.createPet = (req, res) => {
-  reconnectToFirestore()
+  const db = reconnectToFirestore()
   const newPet = req.body
   db.collection('pets').add(newPet)
     .then(() => res.status(200).send('Pet member created!'))
     .catch(err => res.status(500).send('Error creating pet' + err.message))
 }
 exports.updateSinglePet = (req, res) => {
-  reconnectToFirestore()
+  const db = reconnectToFirestore()
   const petUpdate  = req.body
-  db.collection('staffs').doc(req.params.petId).update(petUpdate)
-  .then(this.getAll(req,res))
+  db.collection('pets').doc(req.params.petId).update(petUpdate)
+  .then(() => this.getAllPets(req,res))
   .catch(err => res.status(500).send('Error updating staff: ' + err.message))
 }

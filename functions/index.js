@@ -1,8 +1,8 @@
 
 const functions = require("firebase-functions")
 const express = require('express')
-const { createPet, getAllPets, getSinglePet, deletePet, updateSingleStaff } = require('./src/store/pets')
-const { createStaff, getAllStaff, getSingleStaff, deleteStaff, updateSinglePet } = require('./src/store/staff')
+const { createPet, getAllPets, getSinglePet, deletePet,updateSinglePet} = require('./src/store/pets')
+const { createStaff, getAllStaff, getSingleStaff, deleteStaff, updateSingleStaff} = require('./src/store/staff')
 const app = express()
 app.get('/pets', getAllPets)
 app.get('/staffs', getAllStaff) 
