@@ -1,6 +1,3 @@
-
-const admin = require("firebase-admin")
-const serviceAccount = require("../../credentials.json")
 const {reconnectToFirestore} = require('./index')
 exports.deletePet = (req, res) => {
     const db = reconnectToFirestore()

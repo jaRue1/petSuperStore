@@ -1,6 +1,3 @@
-
-const admin = require("firebase-admin")
-const serviceAccount = require("../../credentials.json")
 const {reconnectToFirestore} = require('./index')
 exports.deleteStaff = (req, res) => {
     const db = reconnectToFirestore()
@@ -45,7 +42,7 @@ exports.updateSingleStaff = (req, res) => {
   const db = reconnectToFirestore()
   const staffUpdate  = req.body
   db.collection('staffs').doc(req.params.staffId).update(staffUpdate)
-  .then(() => this.getAllStaff (req,res))
+  .then(() => this.getAllStaff(req,res))
   .catch(err => res.status(500).send('Error updating staff: ' + err.message))
 }
 
